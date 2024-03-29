@@ -18,23 +18,26 @@ ThisBuild / githubWorkflowBuildPreamble ++= List(
   WorkflowStep.Sbt(List("scalafmtCheckAll"), name = Some("Check formatting"))
 )
 
+ThisBuild / version := "2.1.0-vf"
+
 // Publishing
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 ThisBuild / githubWorkflowScalaVersions := Seq(scala212, scala213, scala3)
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 ThisBuild / githubWorkflowPublishTargetBranches :=
   Seq(RefPredicate.StartsWith(Ref.Tag("v")))
-ThisBuild / githubWorkflowPublish := Seq(
-  WorkflowStep.Sbt(
-    List("ci-release"),
-    env = Map(
-      "PGP_PASSPHRASE" -> "${{ secrets.PGP_PASSPHRASE }}",
-      "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
-      "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
-      "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}"
-    )
-  )
-)
+
+//ThisBuild / githubWorkflowPublish := Seq(
+//  WorkflowStep.Sbt(
+//    List("ci-release"),
+//    env = Map(
+//      "PGP_PASSPHRASE" -> "${{ secrets.PGP_PASSPHRASE }}",
+//      "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
+//      "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
+//      "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}"
+//    )
+//  )
+//)
 
 ThisBuild / startYear := Some(2016)
 ThisBuild / organizationHomepage := Some(url("https://github.com/sangria-graphql"))
@@ -66,7 +69,11 @@ lazy val sangriaPlayJson = (projectMatrix in file("sangria-play-json"))
       "org.sangria-graphql" %% "sangria-marshalling-api" % "1.0.8",
       "org.sangria-graphql" %% "sangria-marshalling-testkit" % "1.0.4" % Test,
       "org.scalatest" %% "scalatest" % "3.2.17" % Test
-    )
+    ),
+
+    githubOwner := "VegaFactor",
+    githubRepository := "play-silhouette",
+    githubTokenSource := TokenSource.Environment("GITHUB_TOKEN") || TokenSource.GitConfig("github.token")
   )
   .customRow(
     scalaVersions = Seq(scala212, scala213),
