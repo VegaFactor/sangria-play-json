@@ -36,3 +36,4 @@ libraryDependencies += "org.sangria-graphql" %% "sangria-play-json" % "<latest v
 
 **sangria-play-json** is licensed under [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
+This is the code taken from this fork whose PR has not been merged yet https://github.com/tarmath/sangria-play-json/tree/main
